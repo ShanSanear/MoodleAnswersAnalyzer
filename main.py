@@ -8,9 +8,22 @@ from bs4 import BeautifulSoup
 QUESTION_TAG_CLASS = 'qtext'
 RIGHT_ANSWER_TAG_CLASS = 'rightanswer'
 USED_PARSER = 'html.parser'
+BASE_HTML = """
+<html lang="pl">
+<head>
+<title>Answers</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="content">
+</div>
+</body>
+</html>
+"""
 
 
-def get_files_content(file_list: Generator[Path]) -> Dict[str, str]:
+def get_files_content(file_list: Generator[Path, None, None]) -> Dict[str, str]:
     return {str(file): file.read_text(encoding='utf-8') for file in file_list}
 
 
@@ -42,10 +55,11 @@ def show_already_hashed(file_path: str, already_hashed: Set[bytes], currently_ha
 
 
 def save_answers(whole_map: Dict[bytes, Dict[str, BeautifulSoup]]):
-    output_soup = BeautifulSoup('', features=USED_PARSER)
+    output_soup = BeautifulSoup(BASE_HTML, features=USED_PARSER)
+    content = output_soup.find('div', {'class': 'content'})
     for key, tags in whole_map.items():
-        output_soup.append(tags['question_tag'])
-        output_soup.append(tags['answer_tag'])
+        content.append(tags['question_tag'])
+        content.append(tags['answer_tag'])
     output_soup = BeautifulSoup(output_soup.prettify(encoding='utf-8'), features='html.parser')
     Path('answers.html').write_text(str(output_soup), encoding='utf-8')
 
