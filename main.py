@@ -8,19 +8,7 @@ from bs4 import BeautifulSoup
 QUESTION_TAG_CLASS = 'qtext'
 RIGHT_ANSWER_TAG_CLASS = 'rightanswer'
 USED_PARSER = 'html.parser'
-BASE_HTML = """
-<html lang="pl">
-<head>
-<title>Answers</title>
-<link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
-<body>
-<div class="content">
-</div>
-</body>
-</html>
-"""
+BASE_HTML = Path('base.html').read_text(encoding='utf-8')
 
 
 def get_files_content(file_list: Generator[Path, None, None]) -> Dict[str, str]:
