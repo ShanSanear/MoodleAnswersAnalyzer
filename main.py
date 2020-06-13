@@ -65,15 +65,16 @@ def save_answers(whole_map: Dict[bytes, Dict[str, BeautifulSoup]]):
 
 
 def main():
-    whole_map = {}
+    questions_answers_map = {}
     files_to_analyze = Path('files_to_analyze').glob('*')
     files_content = get_files_content(files_to_analyze)
     for file_path, file_content in files_content.items():
         soup = load_soup(file_content)
-        tags_map = load_tags_map(soup)
-        show_already_hashed(file_path, set(whole_map.keys()), set(tags_map.keys()))
-        whole_map.update(tags_map)
-    save_answers(whole_map)
+        current_file_questions_answers_map = load_tags_map(soup)
+        show_already_hashed(file_path, set(questions_answers_map.keys()),
+                            set(current_file_questions_answers_map.keys()))
+        questions_answers_map.update(current_file_questions_answers_map)
+    save_answers(questions_answers_map)
 
 
 if __name__ == '__main__':
