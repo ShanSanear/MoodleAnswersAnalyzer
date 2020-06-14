@@ -1,3 +1,6 @@
+###Environment
+This is HTML scraping of [Moodle](https://moodle.org/) based university e-learning platforms post-exam review system.
+
 ###What is this script for?
 Your group just finished first try on your tests with closed-ended questions. 50 of them, to finish in 1 hour.
 
