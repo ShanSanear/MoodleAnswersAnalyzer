@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 QUESTION_TAG_CLASS = 'qtext'
 RIGHT_ANSWER_TAG_CLASS = 'rightanswer'
-USED_PARSER = 'html.parser'
+USED_PARSER = 'html5lib'
 BASE_HTML = Path('base.html').read_text(encoding='utf-8')
 
 
@@ -44,11 +44,16 @@ def show_already_hashed(file_path: str, already_hashed: Set[bytes], currently_ha
 
 def save_answers(whole_map: Dict[bytes, Dict[str, BeautifulSoup]]):
     output_soup = BeautifulSoup(BASE_HTML, features=USED_PARSER)
+    styles = Path('styles.css').read_text(encoding='utf-8')
+    style = output_soup.find('style')
+    style.append(styles)
     content = output_soup.find('div', {'class': 'content'})
     for key, tags in whole_map.items():
-        content.append(tags['question_tag'])
-        content.append(tags['answer_tag'])
-    output_soup = BeautifulSoup(output_soup.prettify(encoding='utf-8'), features='html.parser')
+        question_content_tag = output_soup.new_tag('div', attrs={'class': "question_content"})
+        question_content_tag.append(tags['question_tag'])
+        question_content_tag.append(tags['answer_tag'])
+        content.append(question_content_tag)
+    output_soup = BeautifulSoup(output_soup.prettify(encoding='utf-8'), features='html5lib')
     Path('answers.html').write_text(str(output_soup), encoding='utf-8')
 
 
