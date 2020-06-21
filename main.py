@@ -53,7 +53,6 @@ def save_answers(whole_map: Dict[bytes, Dict[str, BeautifulSoup]]):
         question_content_tag.append(tags['question_tag'])
         question_content_tag.append(tags['answer_tag'])
         content.append(question_content_tag)
-    output_soup = BeautifulSoup(output_soup.prettify(encoding='utf-8'), features='html5lib')
     Path('answers.html').write_text(str(output_soup), encoding='utf-8')
 
 
